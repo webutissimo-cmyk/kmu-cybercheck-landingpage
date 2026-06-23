@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KMU Cybercheck – Kostenloser Cyber-Sicherheitscheck für Unternehmen</title>
+  <meta name="description" content="Prüfen Sie die Cyber-Sicherheit Ihres Unternehmens in wenigen Minuten. Kostenloser KMU-Cybercheck mit Risiko-Score, NIS2-Ersteinschätzung und konkreten Maßnahmen." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              50: '#e8edf5', 100: '#c5d0e6', 200: '#9fb0d5', 300: '#7890c4',
+              400: '#5a77b8', 500: '#3c5eac', 600: '#2d4a8a', 700: '#1e3468',
+              800: '#122047', 900: '#0a1628', 950: '#060d1a',
+            },
+            cyber: {
+              50: '#e0f9ff', 100: '#b3f0ff', 200: '#80e6ff', 300: '#4ddcff',
+              400: '#26d4ff', 500: '#00ccff', 600: '#00a3cc', 700: '#007a99',
+              800: '#005266', 900: '#002933',
+            },
+            accent: {
+              400: '#52acf0', 500: '#2f9ced', 600: '#1a7ec4', 700: '#0f609a',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'fade-in': 'fadeIn 0.6s ease-out forwards',
+            'slide-up': 'slideUp 0.6s ease-out forwards',
+          },
+          keyframes: {
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+          },
+          boxShadow: {
+            'cyber-sm': '0 2px 8px rgba(0,204,255,0.15)',
+            'cyber-md': '0 4px 20px rgba(0,204,255,0.2)',
+            'cyber-lg': '0 8px 40px rgba(0,204,255,0.25)',
+            'card': '0 4px 24px rgba(0,0,0,0.3)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Inter', system-ui, sans-serif; background-color: #060d1a; color: white; overflow-x: hidden; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; line-height: 1.2; }
+
+    .grid-pattern {
+      background-image: linear-gradient(rgba(0,204,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,204,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .radar-bg::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(ellipse at center, rgba(0,204,255,0.06) 0%, rgba(0,204,255,0.03) 30%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .gradient-text {
+      background: linear-gradient(to right, #26d4ff, #52acf0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background-color: #00ccff; color: #060d1a; font-weight: 700;
+      padding: 12px 24px; border-radius: 8px;
+      transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,204,255,0.2);
+      font-size: 0.875rem; text-decoration: none; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background-color: #26d4ff; box-shadow: 0 8px 40px rgba(0,204,255,0.25); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent; border: 2px solid #00ccff; color: #26d4ff;
+      font-weight: 600; padding: 12px 24px; border-radius: 8px;
+      transition: all 0.3s; font-size: 0.875rem; text-decoration: none; cursor: pointer;
+    }
+    .btn-secondary:hover { background-color: #00ccff; color: #060d1a; }
+    .btn-outline-white {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: transparent; border: 2px solid rgba(255,255,255,0.3); color: white;
+      font-weight: 600; padding: 12px 24px; border-radius: 8px;
+      transition: all 0.3s; font-size: 0.875rem; text-decoration: none; cursor: pointer;
+    }
+    .btn-outline-white:hover { border-color: #26d4ff; color: #26d4ff; }
+    .card-dark {
+      background: rgba(18,32,71,0.6); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+    }
+    .card-dark:hover { border-color: rgba(0,204,255,0.3); }
+    .card-glow {
+      background: rgba(18,32,71,0.6); backdrop-filter: blur(8px);
+      border: 1px solid rgba(0,204,255,0.2); border-radius: 12px; padding: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+    }
+    .card-glow:hover { box-shadow: 0 4px 20px rgba(0,204,255,0.2); border-color: rgba(0,204,255,0.4); }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #26d4ff; font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;
+    }
+    .section-title { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; color: white; line-height: 1.2; }
+    .section-subtitle { color: #9fb0d5; font-size: 1rem; line-height: 1.7; }
+    .container-main { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+    @media (min-width: 640px) { .container-main { padding: 0 24px; } }
+    @media (min-width: 1024px) { .container-main { padding: 0 32px; } }
+    .section-padding { padding: 64px 0; }
+    @media (min-width: 768px) { .section-padding { padding: 96px 0; } }
+
+    /* FAQ accordion */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; opacity: 0; }
+    .faq-item.open .faq-answer { max-height: 300px; opacity: 1; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-chevron { transition: transform 0.3s ease; }
+    .faq-item.open .faq-question-text { color: #4ddcff; }
+    .faq-item.open { border-color: rgba(0,204,255,0.3) !important; background: rgba(18,32,71,0.6) !important; }
+
+    /* Mobile menu */
+    .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; opacity: 0; }
+    .mobile-menu.open { max-height: 500px; opacity: 1; }
+
+    /* Animations */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseSlow { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .animate-fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
+    .animate-pulse-slow { animation: pulseSlow 4s cubic-bezier(0.4,0,0.6,1) infinite; }
+
+    /* Hero gradient */
+    .hero-gradient { background: linear-gradient(135deg, #060d1a 0%, #0a1628 40%, #0f2040 70%, #0a1628 100%); }
+    .section-gradient { background: linear-gradient(180deg, #0a1628 0%, #0d1e38 100%); }
+
+    /* Progress bars */
+    .progress-bar { height: 100%; border-radius: 9999px; transition: width 0.6s ease; }
+
+    /* Hover translate */
+    .hover-lift { transition: transform 0.3s ease; }
+    .hover-lift:hover { transform: translateY(-4px); }
+
+    /* Scrollbar hide */
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+  </style>
+</head>
+<body class="bg-navy-950 text-white antialiased overflow-x-hidden">
+
+<!-- ===== HEADER ===== -->
+<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent" style="transition: background 0.3s, box-shadow 0.3s, border 0.3s;">
+  <div class="container-main">
+    <div class="flex items-center justify-between" style="height: 64px;">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2.5 group" style="text-decoration: none;">
+        <div class="relative w-9 h-9 flex items-center justify-center flex-shrink-0">
+          <div class="absolute inset-0 rounded-full border-2 border-cyber-500" style="border-color: rgba(0,204,255,0.6);"></div>
+          <div class="absolute inset-1.5 rounded-full border" style="border-color: rgba(0,204,255,0.3);"></div>
+          <svg class="w-4 h-4 relative z-10" style="color: #26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        </div>
+        <div class="flex flex-col leading-none">
+          <span class="text-white font-bold text-sm" style="font-family: 'Plus Jakarta Sans', sans-serif;">KMU<span style="color: #26d4ff;">Cybercheck</span></span>
+          <span class="text-xs hidden sm:block" style="color: #7890c4;">powered by KMU-SicherheitsRadar</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-1">
+        <a href="#prozess" class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;" onmouseover="this.style.color='#26d4ff';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='#9fb0d5';this.style.background='transparent'">Wie es funktioniert</a>
+        <a href="#vorteile" class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;" onmouseover="this.style.color='#26d4ff';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='#9fb0d5';this.style.background='transparent'">Vorteile</a>
+        <a href="#nis2" class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;" onmouseover="this.style.color='#26d4ff';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='#9fb0d5';this.style.background='transparent'">NIS2</a>
+        <a href="#faq" class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;" onmouseover="this.style.color='#26d4ff';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='#9fb0d5';this.style.background='transparent'">FAQ</a>
+        <a href="https://cyber-sicherheitsradar.de/preise" target="_blank" rel="noopener noreferrer" class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;" onmouseover="this.style.color='#26d4ff';this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.color='#9fb0d5';this.style.background='transparent'">Preise</a>
+      </nav>
+
+      <!-- Desktop CTA -->
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size: 0.875rem; padding: 10px 20px;">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          Kostenlosen Cybercheck starten
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-md transition-colors duration-200" style="background: transparent; border: none; cursor: pointer;" onclick="toggleMobileMenu()">
+        <span id="bar1" class="block w-5 bg-white transition-all duration-300" style="height: 2px;"></span>
+        <span id="bar2" class="block w-5 bg-white transition-all duration-300" style="height: 2px;"></span>
+        <span id="bar3" class="block w-5 bg-white transition-all duration-300" style="height: 2px;"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu lg:hidden" style="background: rgba(10,22,40,0.98); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container-main py-4">
+      <nav class="flex flex-col gap-1 mb-4">
+        <a href="#prozess" onclick="closeMobileMenu()" class="px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;">Wie es funktioniert</a>
+        <a href="#vorteile" onclick="closeMobileMenu()" class="px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;">Vorteile</a>
+        <a href="#nis2" onclick="closeMobileMenu()" class="px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;">NIS2</a>
+        <a href="#faq" onclick="closeMobileMenu()" class="px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200" style="color: #9fb0d5; text-decoration: none;">FAQ</a>
+        <a href="https://cyber-sicherheitsradar.de/preise" target="_blank" rel="noopener noreferrer" onclick="closeMobileMenu()" class="px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 flex items-center justify-between" style="color: #9fb0d5; text-decoration: none;">
+          Preise
+          <svg class="w-3.5 h-3.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+        </a>
+      </nav>
+      <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary w-full justify-center" onclick="closeMobileMenu()">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        Kostenlosen Cybercheck starten
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="relative flex items-center hero-gradient radar-bg grid-pattern overflow-hidden" style="min-height: 100vh; padding-top: 64px;">
+  <!-- Radar rings -->
+  <div class="absolute pointer-events-none" style="top:50%;left:50%;transform:translate(-50%,-50%);">
+    <div class="absolute rounded-full" style="width:600px;height:600px;border:1px solid rgba(0,204,255,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="absolute rounded-full" style="width:900px;height:900px;border:1px solid rgba(0,204,255,0.04);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="absolute rounded-full" style="width:1200px;height:1200px;border:1px solid rgba(0,204,255,0.03);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  </div>
+  <!-- Glow effects -->
+  <div class="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(0,204,255,0.05);filter:blur(80px);"></div>
+  <div class="absolute bottom-0 left-0 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(26,126,196,0.05);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10" style="padding-top: 32px; padding-bottom: 16px;">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Left: Content -->
+      <div class="text-center lg:text-left animate-fade-in-up">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-6" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">
+          <span class="w-2 h-2 rounded-full animate-pulse-slow" style="background:#26d4ff;"></span>
+          <span class="text-xs font-semibold uppercase tracking-wider" style="color:#26d4ff;">Kostenloser Cyber-Sicherheitscheck</span>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="font-bold text-white leading-tight mb-6" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(2rem,5vw,3.5rem);">
+          Wie sicher ist Ihr <span class="gradient-text">Unternehmen</span> wirklich?
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0" style="color:#9fb0d5;font-size:1.125rem;">
+          Machen Sie den kostenlosen Cyber-Sicherheitscheck für KMU und erkennen Sie in wenigen Minuten, wo Ihre größten Risiken liegen.
+        </p>
+
+        <!-- Bullet points -->
+        <ul class="flex flex-col gap-3 mb-10 text-left max-w-sm mx-auto lg:mx-0">
+          <li class="flex items-center gap-3">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.4);">
+              <svg class="w-3 h-3" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            </span>
+            <span class="text-sm font-medium" style="color:#e8edf5;">Kostenloser Einstieg</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.4);">
+              <svg class="w-3 h-3" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            </span>
+            <span class="text-sm font-medium" style="color:#e8edf5;">Risiko-Score für Ihr Unternehmen</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.4);">
+              <svg class="w-3 h-3" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            </span>
+            <span class="text-sm font-medium" style="color:#e8edf5;">NIS2-Ersteinschätzung</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.4);">
+              <svg class="w-3 h-3" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            </span>
+            <span class="text-sm font-medium" style="color:#e8edf5;">Konkrete Sofortmaßnahmen</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.4);">
+              <svg class="w-3 h-3" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            </span>
+            <span class="text-sm font-medium" style="color:#e8edf5;">Ohne IT-Fachjargon</span>
+          </li>
+        </ul>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:1rem;padding:16px 32px;">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+            Kostenlosen Cybercheck starten
+          </a>
+          <a href="https://cyber-sicherheitsradar.de/" target="_blank" rel="noopener noreferrer" class="btn-outline-white" style="font-size:1rem;padding:16px 32px;">
+            Mehr über den SicherheitsRadar erfahren
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          </a>
+        </div>
+
+        <!-- Trust note -->
+        <p class="mt-6 text-xs text-center lg:text-left" style="color:#5a77b8;">
+          ✓ Kein Konto erforderlich &nbsp;·&nbsp; ✓ Keine Kreditkarte &nbsp;·&nbsp; ✓ Sofort starten
+        </p>
+      </div>
+
+      <!-- Right: Dashboard Mockup -->
+      <div class="hidden lg:flex items-center justify-center relative">
+        <div class="relative w-full max-w-lg">
+          <!-- Dashboard Card -->
+          <div class="relative rounded-2xl overflow-hidden" style="background:rgba(10,22,40,0.8);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(18,32,71,0.6);">
+              <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.4);">
+                  <svg class="w-3.5 h-3.5" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+                </div>
+                <span class="text-white text-sm font-semibold">KMU Cyber-Sicherheitscheck</span>
+              </div>
+              <span class="text-xs font-medium rounded-full px-2.5 py-0.5" style="color:#26d4ff;background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">Kostenlos</span>
+            </div>
+
+            <!-- Risk Score -->
+            <div class="px-5 py-5" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-medium uppercase tracking-wider" style="color:#7890c4;">Ihr Risiko-Score</span>
+                <span class="text-xs" style="color:#5a77b8;">Beispiel-Auswertung</span>
+              </div>
+              <div class="flex items-end gap-3 mb-3">
+                <span class="text-4xl font-bold text-white leading-none">62</span>
+                <span class="text-sm mb-1" style="color:#5a77b8;">/ 100</span>
+                <span class="ml-auto text-xs font-semibold rounded-full px-2.5 py-0.5" style="color:#fbbf24;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">Mittleres Risiko</span>
+              </div>
+              <div class="w-full rounded-full overflow-hidden" style="height:10px;background:#122047;">
+                <div class="progress-bar" style="width:62%;background:linear-gradient(to right,#00ccff,#fbbf24,#ef4444);"></div>
+              </div>
+              <div class="flex justify-between mt-1.5">
+                <span class="text-xs" style="color:#4ade80;">Niedrig</span>
+                <span class="text-xs" style="color:#fbbf24;">Mittel</span>
+                <span class="text-xs" style="color:#f87171;">Hoch</span>
+              </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.05);">
+              <span class="text-xs font-medium uppercase tracking-wider block mb-3" style="color:#7890c4;">Sicherheitsbereiche</span>
+              <div class="space-y-2.5">
+                <div class="flex items-center gap-3">
+                  <span class="text-xs flex-shrink-0" style="color:#7890c4;width:160px;">E-Mail-Sicherheit</span>
+                  <div class="flex-1 rounded-full overflow-hidden" style="height:6px;background:#122047;"><div class="progress-bar" style="width:40%;background:#ef4444;"></div></div>
+                  <span class="text-xs text-right" style="color:#5a77b8;width:32px;">40%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs flex-shrink-0" style="color:#7890c4;width:160px;">Zugänge & Passwörter</span>
+                  <div class="flex-1 rounded-full overflow-hidden" style="height:6px;background:#122047;"><div class="progress-bar" style="width:55%;background:#fbbf24;"></div></div>
+                  <span class="text-xs text-right" style="color:#5a77b8;width:32px;">55%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs flex-shrink-0" style="color:#7890c4;width:160px;">Backups & Datensicherung</span>
+                  <div class="flex-1 rounded-full overflow-hidden" style="height:6px;background:#122047;"><div class="progress-bar" style="width:70%;background:#fbbf24;"></div></div>
+                  <span class="text-xs text-right" style="color:#5a77b8;width:32px;">70%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs flex-shrink-0" style="color:#7890c4;width:160px;">Website-Sicherheit</span>
+                  <div class="flex-1 rounded-full overflow-hidden" style="height:6px;background:#122047;"><div class="progress-bar" style="width:80%;background:#4ade80;"></div></div>
+                  <span class="text-xs text-right" style="color:#5a77b8;width:32px;">80%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs flex-shrink-0" style="color:#7890c4;width:160px;">NIS2-Vorbereitung</span>
+                  <div class="flex-1 rounded-full overflow-hidden" style="height:6px;background:#122047;"><div class="progress-bar" style="width:30%;background:#ef4444;"></div></div>
+                  <span class="text-xs text-right" style="color:#5a77b8;width:32px;">30%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="px-5 py-4">
+              <span class="text-xs font-medium uppercase tracking-wider block mb-3" style="color:#7890c4;">Prioritäre Maßnahmen</span>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#26d4ff;"></div>
+                    <span class="text-xs" style="color:#9fb0d5;">SPF/DKIM für E-Mail einrichten</span>
+                  </div>
+                  <span class="text-xs font-medium border rounded-full px-2 py-0.5 flex-shrink-0" style="color:#f87171;background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);">Hoch</span>
+                </div>
+                <div class="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#26d4ff;"></div>
+                    <span class="text-xs" style="color:#9fb0d5;">Zwei-Faktor-Authentifizierung aktivieren</span>
+                  </div>
+                  <span class="text-xs font-medium border rounded-full px-2 py-0.5 flex-shrink-0" style="color:#f87171;background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.2);">Hoch</span>
+                </div>
+                <div class="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);">
+                  <div class="flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#26d4ff;"></div>
+                    <span class="text-xs" style="color:#9fb0d5;">Backup-Strategie überprüfen</span>
+                  </div>
+                  <span class="text-xs font-medium border rounded-full px-2 py-0.5 flex-shrink-0" style="color:#fbbf24;background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.2);">Mittel</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- NIS2 Badge -->
+            <div class="mx-5 mb-5 mt-1 flex items-center gap-3 rounded-xl px-4 py-3" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);">
+              <svg class="w-4 h-4 flex-shrink-0" style="color:#fbbf24;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+              <div>
+                <span class="text-xs font-semibold block" style="color:#fcd34d;">NIS2-Ersteinschätzung</span>
+                <span class="text-xs" style="color:#5a77b8;">Mögliche Betroffenheit erkannt – Details im Report</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Floating badges -->
+          <div class="absolute rounded-xl px-3.5 py-2.5" style="top:-16px;right:-24px;background:#122047;border:1px solid rgba(0,204,255,0.3);box-shadow:0 4px 20px rgba(0,204,255,0.2);">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full animate-pulse" style="background:#4ade80;"></span>
+              <span class="text-white text-xs font-semibold">Sofort-Ergebnis</span>
+            </div>
+          </div>
+          <div class="absolute rounded-xl px-3.5 py-2.5" style="bottom:-16px;left:-24px;background:#122047;border:1px solid rgba(0,204,255,0.3);box-shadow:0 4px 20px rgba(0,204,255,0.2);">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full" style="background:#26d4ff;"></span>
+              <span class="text-white text-xs font-semibold">&lt; 5 Minuten</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom fade -->
+  <div class="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style="background:linear-gradient(to top, #060d1a, transparent);"></div>
+</section>
+
+<!-- ===== PROBLEM SECTION ===== -->
+<section class="section-padding relative overflow-hidden" style="background:#060d1a;">
+  <div class="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none" style="background:rgba(239,68,68,0.03);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="section-label justify-center" style="display:flex;justify-content:center;">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+        Die Realität für KMU
+      </div>
+      <h2 class="section-title mb-4">Cyberangriffe treffen längst nicht mehr nur <span class="gradient-text">Konzerne</span></h2>
+      <p class="section-subtitle">Viele kleine und mittlere Unternehmen kennen ihre eigene Sicherheitslage nicht genau. Dabei sind die Fragen oft einfacher als gedacht – wenn man weiß, wo man hinschauen muss.</p>
+    </div>
+
+    <!-- Problem Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+      <!-- Card 1 -->
+      <div class="group rounded-xl p-6 transition-all duration-300 hover-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(239,68,68,0.2)';this.style.background='rgba(18,32,71,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.6)'">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Sind E-Mail und Website richtig abgesichert?</h3>
+            <p class="text-sm leading-relaxed" style="color:#7890c4;">Viele KMU nutzen E-Mail und Website täglich – ohne zu wissen, ob grundlegende Schutzmaßnahmen aktiv sind.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="group rounded-xl p-6 transition-all duration-300 hover-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(239,68,68,0.2)';this.style.background='rgba(18,32,71,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.6)'">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-4.5 0 2.625 2.625 0 014.5 0z" /></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Gibt es klare Verantwortlichkeiten?</h3>
+            <p class="text-sm leading-relaxed" style="color:#7890c4;">Wer ist in Ihrem Unternehmen für IT-Sicherheit zuständig? Ohne klare Zuständigkeiten bleiben Risiken unbemerkt.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="group rounded-xl p-6 transition-all duration-300 hover-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(239,68,68,0.2)';this.style.background='rgba(18,32,71,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.6)'">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 2.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Sind Backups, Zugänge und Mitarbeiterschutz geregelt?</h3>
+            <p class="text-sm leading-relaxed" style="color:#7890c4;">Regelmäßige Backups, sichere Passwörter und geschulte Mitarbeitende sind die Basis – aber oft nicht vorhanden.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="group rounded-xl p-6 transition-all duration-300 hover-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(239,68,68,0.2)';this.style.background='rgba(18,32,71,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.6)'">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Besteht möglicherweise eine NIS2-Betroffenheit?</h3>
+            <p class="text-sm leading-relaxed" style="color:#7890c4;">Die NIS2-Richtlinie betrifft mehr Unternehmen als gedacht – auch KMU können betroffen sein, ohne es zu wissen.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Card 5 -->
+      <div class="group rounded-xl p-6 transition-all duration-300 hover-lift" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(239,68,68,0.2)';this.style.background='rgba(18,32,71,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.6)'">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-11 h-11 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);color:#f87171;">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+          </div>
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Gibt es Nachweispflichten gegenüber Kunden, Partnern oder Versicherungen?</h3>
+            <p class="text-sm leading-relaxed" style="color:#7890c4;">Immer mehr Geschäftspartner und Versicherungen fordern Nachweise über IT-Sicherheitsmaßnahmen.</p>
+          </div>
+        </div>
+      </div>
+      <!-- CTA Card -->
+      <div class="group rounded-xl p-6 transition-all duration-300 hover-lift flex flex-col justify-between" style="background:linear-gradient(135deg,rgba(0,204,255,0.1),rgba(26,126,196,0.1));border:1px solid rgba(0,204,255,0.2);" onmouseover="this.style.borderColor='rgba(0,204,255,0.4)'" onmouseout="this.style.borderColor='rgba(0,204,255,0.2)'">
+        <div>
+          <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.2);border:1px solid rgba(0,204,255,0.3);color:#26d4ff;">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          </div>
+          <h3 class="text-white font-semibold text-sm mb-2">Jetzt Klarheit schaffen</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color:#9fb0d5;">Ein einfacher Einstieg ist sinnvoll – bevor ein Vorfall passiert und es teuer wird.</p>
+        </div>
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary text-sm w-full justify-center">Check starten</a>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="rounded-xl p-6 md:p-8" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+        <div class="flex flex-col items-center">
+          <div class="text-2xl md:text-3xl font-bold mb-1" style="color:#26d4ff;">43%</div>
+          <div class="text-white text-sm font-semibold">aller Cyberangriffe</div>
+          <div class="text-xs mt-0.5" style="color:#5a77b8;">richten sich gegen KMU</div>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="text-2xl md:text-3xl font-bold mb-1" style="color:#26d4ff;">∅ 200.000 €</div>
+          <div class="text-white text-sm font-semibold">Schaden pro Vorfall</div>
+          <div class="text-xs mt-0.5" style="color:#5a77b8;">bei kleinen Unternehmen</div>
+        </div>
+        <div class="flex flex-col items-center">
+          <div class="text-2xl md:text-3xl font-bold mb-1" style="color:#26d4ff;">60%</div>
+          <div class="text-white text-sm font-semibold">der betroffenen KMU</div>
+          <div class="text-xs mt-0.5" style="color:#5a77b8;">schließen innerhalb von 6 Monaten</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOLUTION SECTION ===== -->
+<section class="section-padding relative overflow-hidden section-gradient">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.5;"></div>
+  <div class="absolute rounded-full pointer-events-none" style="top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:rgba(0,204,255,0.03);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="section-label" style="display:flex;justify-content:center;">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>
+        Die Lösung
+      </div>
+      <h2 class="section-title mb-4">Der einfache Einstieg in mehr <span class="gradient-text">Cyber-Sicherheit</span></h2>
+      <p class="section-subtitle max-w-2xl mx-auto">Der KMU-SicherheitsRadar ist ein verständlicher Online-Check für kleine und mittlere Unternehmen. Der Check kombiniert kurze Fragen mit einer automatischen Sicherheitsauswertung und zeigt, wo akuter Handlungsbedarf besteht.</p>
+    </div>
+
+    <!-- Solution Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12">
+      <!-- Step 1 -->
+      <div class="relative card-glow hover-lift">
+        <div class="absolute w-8 h-8 rounded-full flex items-center justify-center" style="top:-12px;right:-12px;background:#1e3468;border:1px solid rgba(255,255,255,0.1);">
+          <span class="text-xs font-bold" style="color:#7890c4;">01</span>
+        </div>
+        <div class="absolute hidden md:block" style="top:40px;right:-16px;width:32px;height:2px;background:linear-gradient(to right,rgba(0,204,255,0.4),transparent);z-index:20;"></div>
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background:rgba(0,204,255,0.15);border:1px solid rgba(0,204,255,0.3);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-lg md:text-xl mb-3">Fragen beantworten</h3>
+        <p class="text-sm md:text-base leading-relaxed" style="color:#7890c4;">Beantworten Sie verständliche Fragen zu Unternehmen, IT, E-Mail, Website, Backups und Organisation.</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="relative card-glow hover-lift">
+        <div class="absolute w-8 h-8 rounded-full flex items-center justify-center" style="top:-12px;right:-12px;background:#1e3468;border:1px solid rgba(255,255,255,0.1);">
+          <span class="text-xs font-bold" style="color:#7890c4;">02</span>
+        </div>
+        <div class="absolute hidden md:block" style="top:40px;right:-16px;width:32px;height:2px;background:linear-gradient(to right,rgba(0,204,255,0.4),transparent);z-index:20;"></div>
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background:rgba(47,156,237,0.15);border:1px solid rgba(47,156,237,0.3);color:#52acf0;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-lg md:text-xl mb-3">Risiken erkennen</h3>
+        <p class="text-sm md:text-base leading-relaxed" style="color:#7890c4;">Ihre Angaben werden ausgewertet und zu einem verständlichen Risiko-Score zusammengeführt.</p>
+      </div>
+      <!-- Step 3 -->
+      <div class="relative card-glow hover-lift">
+        <div class="absolute w-8 h-8 rounded-full flex items-center justify-center" style="top:-12px;right:-12px;background:#1e3468;border:1px solid rgba(255,255,255,0.1);">
+          <span class="text-xs font-bold" style="color:#7890c4;">03</span>
+        </div>
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-5" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.3);color:#4ade80;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-lg md:text-xl mb-3">Maßnahmen erhalten</h3>
+        <p class="text-sm md:text-base leading-relaxed" style="color:#7890c4;">Sie erhalten konkrete Empfehlungen, welche Schritte jetzt Priorität haben.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center">
+      <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:1rem;padding:16px 32px;">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" /></svg>
+        Jetzt kostenlosen Check starten
+      </a>
+      <p class="mt-3 text-sm" style="color:#5a77b8;">Kostenlos · Unverbindlich · Sofort verfügbar</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BENEFITS SECTION ===== -->
+<section id="vorteile" class="section-padding relative overflow-hidden" style="background:#060d1a;">
+  <div class="absolute bottom-0 left-0 w-96 h-96 rounded-full pointer-events-none" style="background:rgba(0,204,255,0.04);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Left -->
+      <div>
+        <div class="section-label">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Ihre Vorteile
+        </div>
+        <h2 class="section-title mb-4">Warum der Check für KMU <span class="gradient-text">sinnvoll ist</span></h2>
+        <p class="section-subtitle mb-8">Der KMU-Cybercheck wurde speziell für Unternehmen entwickelt, die keine eigene IT-Abteilung haben – aber trotzdem wissen wollen, wo sie stehen.</p>
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          Kostenlosen Cybercheck starten
+        </a>
+      </div>
+      <!-- Right: Benefits List -->
+      <div class="grid grid-cols-1 gap-3">
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">⏱</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">In wenigen Minuten einen ersten Überblick erhalten</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">👤</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">Keine IT-Vorkenntnisse notwendig</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">💬</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">Verständliche Fragen statt komplizierter Audit-Sprache</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">📊</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">Risiko-Score für Geschäftsführung und Verantwortliche</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">⚖️</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">NIS2-Ersteinschätzung inklusive</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">🛡</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">Sofortmaßnahmen für die wichtigsten Schwachstellen</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">🚀</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">Ideal als Einstieg vor Beratung, Audit oder Penetrationstest</span>
+          </div>
+        </div>
+        <div class="group flex items-start gap-4 rounded-xl p-4 transition-all duration-300" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(0,204,255,0.25)';this.style.background='rgba(18,32,71,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.background='rgba(10,22,40,0.5)'">
+          <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);">☁️</div>
+          <div class="flex items-center gap-3 flex-1">
+            <svg class="w-4 h-4 flex-shrink-0" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+            <span class="text-sm leading-snug" style="color:#e8edf5;">Auch für Unternehmen geeignet, die mit Microsoft 365, Cloud-Diensten oder sensiblen Kundendaten arbeiten</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TARGET GROUPS SECTION ===== -->
+<section class="section-padding relative overflow-hidden section-gradient">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.3;"></div>
+  <div class="absolute top-0 right-0 w-80 h-80 rounded-full pointer-events-none" style="background:rgba(26,126,196,0.04);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="section-label" style="display:flex;justify-content:center;">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-4.5 0 2.625 2.625 0 014.5 0z" /></svg>
+        Zielgruppen
+      </div>
+      <h2 class="section-title mb-4">Für wen ist der <span class="gradient-text">KMU-Cybercheck</span> geeignet?</h2>
+      <p class="section-subtitle">Der Check wurde für Unternehmen entwickelt, die einen einfachen, verständlichen Einstieg in das Thema Cyber-Sicherheit suchen.</p>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- Card 1 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all duration-300" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Geschäftsführer & Inhaber</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Behalten Sie den Überblick über die Sicherheitslage Ihres Unternehmens – ohne IT-Studium.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Handwerksbetriebe</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Auch Handwerksbetriebe sind Ziel von Cyberangriffen – besonders wenn Kundendaten digital verwaltet werden.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Dienstleister & Beratungen</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Professionelle Dienstleister verarbeiten oft sensible Kundendaten – ein Sicherheitscheck schafft Vertrauen.</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Händler & lokale Unternehmen</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Online-Shops und lokale Händler mit digitaler Infrastruktur sind häufige Angriffsziele.</p>
+      </div>
+      <!-- Card 5 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Unternehmen mit 10 bis 250 Mitarbeitenden</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Genau die Unternehmensgröße, die oft zu groß für Nachlässigkeit, aber zu klein für eine eigene IT-Abteilung ist.</p>
+      </div>
+      <!-- Card 6 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Unternehmen mit sensiblen Kundendaten</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Wer Kundendaten verarbeitet, trägt Verantwortung – und sollte wissen, wie gut diese geschützt sind.</p>
+      </div>
+      <!-- Card 7 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">Betriebe mit Cyberversicherungs- oder Compliance-Anforderungen</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Versicherungen und Compliance-Anforderungen verlangen zunehmend Nachweise über Sicherheitsmaßnahmen.</p>
+      </div>
+      <!-- Card 8 -->
+      <div class="card-dark hover-lift cursor-default">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0H3" /></svg>
+        </div>
+        <h3 class="text-white font-semibold text-sm mb-2 leading-snug">IT-Dienstleister und Berater, die Kunden sensibilisieren möchten</h3>
+        <p class="text-xs leading-relaxed" style="color:#5a77b8;">Nutzen Sie den Check als einfaches Werkzeug, um Kunden für Cyber-Sicherheit zu sensibilisieren.</p>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="mt-12 text-center">
+      <p class="text-sm md:text-base mb-4" style="color:#7890c4;">Erkennen Sie sich wieder? Dann ist der kostenlose Check der richtige erste Schritt.</p>
+      <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+        Zum kostenlosen Cybercheck
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== NIS2 SECTION ===== -->
+<section id="nis2" class="section-padding relative overflow-hidden" style="background:#060d1a;">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.2;"></div>
+  <div class="absolute rounded-full pointer-events-none" style="top:50%;right:0;width:384px;height:384px;background:rgba(26,126,196,0.05);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <!-- Left -->
+      <div>
+        <div class="section-label">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+          NIS2-Richtlinie
+        </div>
+        <h2 class="section-title mb-4">NIS2: Viele Unternehmen unterschätzen ihre <span class="gradient-text">Betroffenheit</span></h2>
+        <div class="space-y-4 text-sm md:text-base leading-relaxed mb-8" style="color:#9fb0d5;">
+          <p>Die NIS2-Richtlinie ist seit Oktober 2024 in deutsches Recht umgesetzt und betrifft deutlich mehr Unternehmen als die Vorgängerregelung. Viele KMU gehen davon aus, dass NIS2 nur große Konzerne betrifft – das ist ein Irrtum.</p>
+          <p>Auch kleine und mittlere Unternehmen können betroffen sein: zum Beispiel durch ihre Branche, Mitarbeiterzahl, Umsatz, kritische Dienstleistungen oder als Zulieferer größerer Organisationen. Wer betroffen ist, muss Sicherheitsmaßnahmen nachweisen und Vorfälle melden.</p>
+          <p>Der erste Schritt ist herauszufinden, ob und wie stark Ihr Unternehmen betroffen sein könnte.</p>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="rounded-xl p-4 mb-8" style="background:rgba(18,32,71,0.6);border:1px solid rgba(245,158,11,0.2);">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" style="color:#fbbf24;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+            <p class="text-sm leading-relaxed" style="color:rgba(253,230,138,0.8);"><strong style="color:#fcd34d;">Hinweis:</strong> Der Check ersetzt keine Rechtsberatung, gibt aber eine erste Orientierung, ob Ihr Unternehmen genauer hinschauen sollte.</p>
+          </div>
+        </div>
+
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          NIS2-Ersteinschätzung starten
+        </a>
+      </div>
+
+      <!-- Right: NIS2 Triggers -->
+      <div>
+        <div class="rounded-2xl p-6 md:p-8" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);">
+          <h3 class="text-white font-bold text-lg mb-6 flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs" style="background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;">!</span>
+            Mögliche NIS2-Betroffenheit durch:
+          </h3>
+          <div class="space-y-4">
+            <div class="flex items-start gap-4 p-4 rounded-xl transition-colors duration-300" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.borderColor='rgba(245,158,11,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">🏭</div>
+              <div>
+                <div class="text-white font-semibold text-sm mb-1">Branche</div>
+                <div class="text-xs leading-relaxed" style="color:#7890c4;">Bestimmte Branchen wie Energie, Gesundheit, Transport oder digitale Infrastruktur sind direkt betroffen.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-xl transition-colors duration-300" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.borderColor='rgba(245,158,11,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">👥</div>
+              <div>
+                <div class="text-white font-semibold text-sm mb-1">Mitarbeiterzahl</div>
+                <div class="text-xs leading-relaxed" style="color:#7890c4;">Ab 50 Mitarbeitenden können Unternehmen in den Anwendungsbereich fallen.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-xl transition-colors duration-300" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.borderColor='rgba(245,158,11,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">💰</div>
+              <div>
+                <div class="text-white font-semibold text-sm mb-1">Umsatz</div>
+                <div class="text-xs leading-relaxed" style="color:#7890c4;">Ein Jahresumsatz über 10 Mio. Euro kann zur NIS2-Betroffenheit führen.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-xl transition-colors duration-300" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.borderColor='rgba(245,158,11,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">🔗</div>
+              <div>
+                <div class="text-white font-semibold text-sm mb-1">Zulieferer</div>
+                <div class="text-xs leading-relaxed" style="color:#7890c4;">Als Zulieferer oder Dienstleister größerer Organisationen können Sie indirekt betroffen sein.</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-4 p-4 rounded-xl transition-colors duration-300" style="background:rgba(18,32,71,0.5);border:1px solid rgba(255,255,255,0.05);" onmouseover="this.style.borderColor='rgba(245,158,11,0.15)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)'">
+              <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);">⚡</div>
+              <div>
+                <div class="text-white font-semibold text-sm mb-1">Kritische Dienste</div>
+                <div class="text-xs leading-relaxed" style="color:#7890c4;">Unternehmen, die kritische Dienstleistungen erbringen, fallen häufig unter NIS2.</div>
+              </div>
+            </div>
+          </div>
+          <!-- NIS2 Badge -->
+          <div class="mt-6 p-4 rounded-xl text-center" style="background:linear-gradient(to right,rgba(245,158,11,0.1),rgba(249,115,22,0.1));border:1px solid rgba(245,158,11,0.2);">
+            <div class="font-bold text-sm mb-1" style="color:#fcd34d;">Sind Sie betroffen?</div>
+            <div class="text-xs" style="color:#7890c4;">Der kostenlose Check gibt Ihnen eine erste Einschätzung.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROCESS SECTION ===== -->
+<section id="prozess" class="section-padding relative overflow-hidden section-gradient">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.3;"></div>
+  <div class="absolute rounded-full pointer-events-none" style="top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:rgba(0,204,255,0.03);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="section-label" style="display:flex;justify-content:center;">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        So funktioniert es
+      </div>
+      <h2 class="section-title mb-4">In <span class="gradient-text">wenigen Schritten</span> zur Sicherheitseinschätzung</h2>
+      <p class="section-subtitle">Der KMU-Cybercheck führt Sie strukturiert durch alle relevanten Bereiche – ohne technisches Vorwissen.</p>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      <!-- Step 1 -->
+      <div class="relative card-glow hover-lift">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0" style="background:rgba(0,204,255,0.15);border:2px solid rgba(0,204,255,0.3);color:#26d4ff;">1</div>
+          <div class="hidden lg:block flex-1 h-0.5" style="background:linear-gradient(to right,rgba(0,204,255,0.3),transparent);"></div>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Unternehmensdaten eingeben</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Geben Sie grundlegende Informationen zu Ihrem Unternehmen ein – Branche, Größe und digitale Infrastruktur.</p>
+      </div>
+      <!-- Step 2 -->
+      <div class="relative card-glow hover-lift">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0" style="background:rgba(0,204,255,0.15);border:2px solid rgba(0,204,255,0.3);color:#26d4ff;">2</div>
+          <div class="hidden lg:block flex-1 h-0.5" style="background:linear-gradient(to right,rgba(0,204,255,0.3),transparent);"></div>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Sicherheitsfragen beantworten</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Beantworten Sie verständliche Fragen zu E-Mail, Website, Backups, Zugängen und Organisation.</p>
+      </div>
+      <!-- Step 3 -->
+      <div class="relative card-glow hover-lift">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0" style="background:rgba(0,204,255,0.15);border:2px solid rgba(0,204,255,0.3);color:#26d4ff;">3</div>
+          <div class="hidden lg:block flex-1 h-0.5" style="background:linear-gradient(to right,rgba(0,204,255,0.3),transparent);"></div>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Risiko-Score erhalten</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Ihre Angaben werden automatisch ausgewertet und zu einem verständlichen Risiko-Score zusammengeführt.</p>
+      </div>
+      <!-- Step 4 -->
+      <div class="relative card-glow hover-lift">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0" style="background:rgba(0,204,255,0.15);border:2px solid rgba(0,204,255,0.3);color:#26d4ff;">4</div>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);color:#4ade80;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Maßnahmen umsetzen</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Sie erhalten konkrete, priorisierte Empfehlungen – welche Schritte jetzt am wichtigsten sind.</p>
+      </div>
+    </div>
+
+    <!-- What is checked -->
+    <div class="rounded-2xl p-6 md:p-8" style="background:rgba(18,32,71,0.6);border:1px solid rgba(255,255,255,0.08);">
+      <h3 class="text-white font-bold text-lg mb-6 text-center">Was wird geprüft?</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="flex flex-col items-center gap-2 p-3 rounded-xl text-center" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.05);">
+          <span class="text-2xl">📧</span>
+          <span class="text-xs font-medium" style="color:#9fb0d5;">E-Mail-Sicherheit</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 p-3 rounded-xl text-center" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.05);">
+          <span class="text-2xl">🌐</span>
+          <span class="text-xs font-medium" style="color:#9fb0d5;">Website</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 p-3 rounded-xl text-center" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.05);">
+          <span class="text-2xl">💾</span>
+          <span class="text-xs font-medium" style="color:#9fb0d5;">Backups</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 p-3 rounded-xl text-center" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.05);">
+          <span class="text-2xl">🔑</span>
+          <span class="text-xs font-medium" style="color:#9fb0d5;">Zugänge</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 p-3 rounded-xl text-center" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.05);">
+          <span class="text-2xl">☁️</span>
+          <span class="text-xs font-medium" style="color:#9fb0d5;">Cloud-Nutzung</span>
+        </div>
+        <div class="flex flex-col items-center gap-2 p-3 rounded-xl text-center" style="background:rgba(10,22,40,0.5);border:1px solid rgba(255,255,255,0.05);">
+          <span class="text-2xl">⚖️</span>
+          <span class="text-xs font-medium" style="color:#9fb0d5;">NIS2-Relevanz</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST SECTION ===== -->
+<section class="section-padding relative overflow-hidden" style="background:#060d1a;">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.2;"></div>
+  <div class="absolute rounded-full pointer-events-none" style="bottom:0;right:0;width:384px;height:384px;background:rgba(0,204,255,0.04);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="section-label" style="display:flex;justify-content:center;">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        Vertrauen & Transparenz
+      </div>
+      <h2 class="section-title mb-4">Warum Sie dem <span class="gradient-text">KMU-Cybercheck</span> vertrauen können</h2>
+      <p class="section-subtitle">Transparenz und Datenschutz sind uns wichtig. Hier erfahren Sie, wie der Check funktioniert und was mit Ihren Daten passiert.</p>
+    </div>
+
+    <!-- Trust Points Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div class="card-dark hover-lift">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Entwickelt für KMU</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Der Check wurde speziell für kleine und mittlere Unternehmen entwickelt – ohne IT-Fachjargon und ohne Vorkenntnisse nutzbar.</p>
+      </div>
+      <div class="card-dark hover-lift">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Datenschutz & Vertraulichkeit</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Ihre Angaben werden vertraulich behandelt und nicht an Dritte weitergegeben. Kein Konto erforderlich.</p>
+      </div>
+      <div class="card-dark hover-lift">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Schnell & unkompliziert</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Der Check dauert weniger als 5 Minuten und liefert sofort ein Ergebnis – ohne Wartezeit oder Rückruf.</p>
+      </div>
+      <div class="card-dark hover-lift">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Verständliche Auswertung</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Kein technisches Kauderwelsch – die Ergebnisse sind klar formuliert und direkt umsetzbar.</p>
+      </div>
+      <div class="card-dark hover-lift">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Kostenloser Einstieg</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">Der Basis-Check ist kostenlos und unverbindlich. Keine versteckten Kosten, keine automatische Verlängerung.</p>
+      </div>
+      <div class="card-dark hover-lift">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);color:#26d4ff;">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+        </div>
+        <h3 class="text-white font-bold text-base mb-2">Von Webutissimo S.L.</h3>
+        <p class="text-sm leading-relaxed" style="color:#7890c4;">KMU-Cybercheck ist eine Landingpage des KMU-SicherheitsRadar – entwickelt von Webutissimo S.L.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center">
+      <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:1rem;padding:16px 32px;">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        Jetzt kostenlosen Check starten
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ SECTION ===== -->
+<section id="faq" class="section-padding relative overflow-hidden section-gradient">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.2;"></div>
+  <div class="absolute rounded-full pointer-events-none" style="top:50%;left:0;width:320px;height:320px;background:rgba(0,204,255,0.04);filter:blur(80px);"></div>
+
+  <div class="container-main relative z-10">
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16">
+      <div class="section-label" style="display:flex;justify-content:center;">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+        Häufige Fragen
+      </div>
+      <h2 class="section-title mb-4">Ihre Fragen zum <span class="gradient-text">KMU-Cybercheck</span></h2>
+      <p class="section-subtitle">Hier finden Sie Antworten auf die häufigsten Fragen zum kostenlosen Cyber-Sicherheitscheck.</p>
+    </div>
+
+    <!-- FAQ Items -->
+    <div class="max-w-3xl mx-auto space-y-3 mb-12">
+      <!-- FAQ 1 - open by default -->
+      <div class="faq-item open rounded-xl overflow-hidden transition-all duration-300" style="border:1px solid rgba(0,204,255,0.3);background:rgba(18,32,71,0.6);">
+        <button class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left" onclick="toggleFAQ(this)" style="background:transparent;border:none;cursor:pointer;">
+          <span class="faq-question-text font-semibold text-sm md:text-base leading-snug transition-colors duration-200" style="color:#4ddcff;">Ist der Cyber-Sicherheitscheck wirklich kostenlos?</span>
+          <span class="flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center faq-chevron" style="border-color:rgba(0,204,255,0.4);background:rgba(0,204,255,0.1);color:#26d4ff;transform:rotate(180deg);">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </span>
+        </button>
+        <div class="faq-answer" style="max-height:300px;opacity:1;">
+          <div class="px-5 md:px-6 pb-5 md:pb-6">
+            <div class="h-px mb-4" style="background:rgba(255,255,255,0.05);"></div>
+            <p class="text-sm md:text-base leading-relaxed" style="color:#9fb0d5;">Ja, der Einstieg ist kostenlos. Sie erhalten eine erste Einschätzung Ihrer Sicherheitslage und können anschließend entscheiden, ob Sie weitere Funktionen nutzen möchten.</p>
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 2 -->
+      <div class="faq-item rounded-xl overflow-hidden transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:rgba(10,22,40,0.4);">
+        <button class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left" onclick="toggleFAQ(this)" style="background:transparent;border:none;cursor:pointer;">
+          <span class="faq-question-text font-semibold text-sm md:text-base leading-snug text-white">Brauche ich technisches Vorwissen?</span>
+          <span class="flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center faq-chevron" style="border-color:rgba(255,255,255,0.2);color:#7890c4;">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="px-5 md:px-6 pb-5 md:pb-6">
+            <div class="h-px mb-4" style="background:rgba(255,255,255,0.05);"></div>
+            <p class="text-sm md:text-base leading-relaxed" style="color:#9fb0d5;">Nein. Die Fragen sind so formuliert, dass auch Geschäftsführer und Inhaber ohne IT-Abteilung sie beantworten können.</p>
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 3 -->
+      <div class="faq-item rounded-xl overflow-hidden transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:rgba(10,22,40,0.4);">
+        <button class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left" onclick="toggleFAQ(this)" style="background:transparent;border:none;cursor:pointer;">
+          <span class="faq-question-text font-semibold text-sm md:text-base leading-snug text-white">Was wird geprüft?</span>
+          <span class="flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center faq-chevron" style="border-color:rgba(255,255,255,0.2);color:#7890c4;">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="px-5 md:px-6 pb-5 md:pb-6">
+            <div class="h-px mb-4" style="background:rgba(255,255,255,0.05);"></div>
+            <p class="text-sm md:text-base leading-relaxed" style="color:#9fb0d5;">Der Check betrachtet unter anderem Organisation, Website, E-Mail-Sicherheit, Backups, Zugänge, Cloud-Nutzung, NIS2-Relevanz und grundlegende Sicherheitsmaßnahmen.</p>
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 4 -->
+      <div class="faq-item rounded-xl overflow-hidden transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:rgba(10,22,40,0.4);">
+        <button class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left" onclick="toggleFAQ(this)" style="background:transparent;border:none;cursor:pointer;">
+          <span class="faq-question-text font-semibold text-sm md:text-base leading-snug text-white">Ersetzt der Check ein Audit oder einen Penetrationstest?</span>
+          <span class="flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center faq-chevron" style="border-color:rgba(255,255,255,0.2);color:#7890c4;">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="px-5 md:px-6 pb-5 md:pb-6">
+            <div class="h-px mb-4" style="background:rgba(255,255,255,0.05);"></div>
+            <p class="text-sm md:text-base leading-relaxed" style="color:#9fb0d5;">Nein. Der Check ist ein verständlicher Einstieg und hilft, Risiken und Prioritäten zu erkennen. Für tiefgehende technische Prüfungen können später Audits oder Penetrationstests sinnvoll sein.</p>
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 5 -->
+      <div class="faq-item rounded-xl overflow-hidden transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:rgba(10,22,40,0.4);">
+        <button class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left" onclick="toggleFAQ(this)" style="background:transparent;border:none;cursor:pointer;">
+          <span class="faq-question-text font-semibold text-sm md:text-base leading-snug text-white">Ist der Check für NIS2 geeignet?</span>
+          <span class="flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center faq-chevron" style="border-color:rgba(255,255,255,0.2);color:#7890c4;">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="px-5 md:px-6 pb-5 md:pb-6">
+            <div class="h-px mb-4" style="background:rgba(255,255,255,0.05);"></div>
+            <p class="text-sm md:text-base leading-relaxed" style="color:#9fb0d5;">Der Check enthält eine NIS2-Ersteinschätzung. Diese ersetzt keine Rechtsberatung, hilft aber dabei, mögliche Betroffenheit und Handlungsbedarf frühzeitig zu erkennen.</p>
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 6 -->
+      <div class="faq-item rounded-xl overflow-hidden transition-all duration-300" style="border:1px solid rgba(255,255,255,0.08);background:rgba(10,22,40,0.4);">
+        <button class="w-full flex items-center justify-between gap-4 p-5 md:p-6 text-left" onclick="toggleFAQ(this)" style="background:transparent;border:none;cursor:pointer;">
+          <span class="faq-question-text font-semibold text-sm md:text-base leading-snug text-white">Was passiert nach dem Check?</span>
+          <span class="flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center faq-chevron" style="border-color:rgba(255,255,255,0.2);color:#7890c4;">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="px-5 md:px-6 pb-5 md:pb-6">
+            <div class="h-px mb-4" style="background:rgba(255,255,255,0.05);"></div>
+            <p class="text-sm md:text-base leading-relaxed" style="color:#9fb0d5;">Sie erhalten eine verständliche Auswertung mit Risiko-Score und konkreten Maßnahmen. Je nach Bedarf können weitere Reports, Monitoring oder professionelle Unterstützung genutzt werden.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA -->
+    <div class="text-center">
+      <p class="text-sm md:text-base mb-4" style="color:#7890c4;">Noch weitere Fragen? Besuchen Sie die Hauptseite des KMU-SicherheitsRadar.</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          Kostenlosen Check starten
+        </a>
+        <a href="https://cyber-sicherheitsradar.de/" target="_blank" rel="noopener noreferrer" class="btn-outline-white">Zur Hauptseite</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA SECTION ===== -->
+<section class="section-padding relative overflow-hidden" style="background:#060d1a;">
+  <div class="absolute inset-0 grid-pattern pointer-events-none" style="opacity:0.3;"></div>
+  <div class="absolute rounded-full pointer-events-none" style="top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:rgba(0,204,255,0.06);filter:blur(80px);"></div>
+  <div class="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none" style="background:rgba(26,126,196,0.05);filter:blur(80px);"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 rounded-full pointer-events-none" style="background:rgba(0,204,255,0.05);filter:blur(80px);"></div>
+  <!-- Radar rings -->
+  <div class="absolute pointer-events-none" style="top:50%;left:50%;transform:translate(-50%,-50%);">
+    <div class="absolute rounded-full" style="width:400px;height:400px;border:1px solid rgba(0,204,255,0.08);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="absolute rounded-full" style="width:600px;height:600px;border:1px solid rgba(0,204,255,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="absolute rounded-full" style="width:800px;height:800px;border:1px solid rgba(0,204,255,0.03);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  </div>
+
+  <div class="container-main relative z-10">
+    <div class="max-w-3xl mx-auto text-center">
+      <!-- Icon -->
+      <div class="flex justify-center mb-8">
+        <div class="relative w-20 h-20 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full animate-pulse-slow" style="background:rgba(0,204,255,0.1);border:1px solid rgba(0,204,255,0.2);"></div>
+          <div class="absolute inset-2 rounded-full" style="border:1px solid rgba(0,204,255,0.15);"></div>
+          <svg class="w-10 h-10 relative z-10" style="color:#26d4ff;filter:drop-shadow(0 0 15px rgba(0,204,255,0.5));" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Headline -->
+      <h2 class="font-bold text-white leading-tight mb-6" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(1.75rem,4vw,3rem);">
+        Finden Sie jetzt heraus, wo Ihr <span class="gradient-text">Unternehmen steht.</span>
+      </h2>
+
+      <!-- Text -->
+      <p class="leading-relaxed mb-10 max-w-2xl mx-auto" style="color:#9fb0d5;font-size:1.125rem;">
+        Starten Sie den kostenlosen Cyber-Sicherheitscheck und erhalten Sie eine erste Orientierung zu Risiken, NIS2 und konkreten Maßnahmen.
+      </p>
+
+      <!-- Feature pills -->
+      <div class="flex flex-wrap justify-center gap-3 mb-10">
+        <span class="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium" style="background:rgba(18,32,71,0.6);border:1px solid rgba(255,255,255,0.1);color:#9fb0d5;">
+          <svg class="w-3.5 h-3.5" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+          Kostenlos
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium" style="background:rgba(18,32,71,0.6);border:1px solid rgba(255,255,255,0.1);color:#9fb0d5;">
+          <svg class="w-3.5 h-3.5" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+          Keine Registrierung
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium" style="background:rgba(18,32,71,0.6);border:1px solid rgba(255,255,255,0.1);color:#9fb0d5;">
+          <svg class="w-3.5 h-3.5" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+          Sofort verfügbar
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium" style="background:rgba(18,32,71,0.6);border:1px solid rgba(255,255,255,0.1);color:#9fb0d5;">
+          <svg class="w-3.5 h-3.5" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+          NIS2-Ersteinschätzung
+        </span>
+        <span class="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs md:text-sm font-medium" style="background:rgba(18,32,71,0.6);border:1px solid rgba(255,255,255,0.1);color:#9fb0d5;">
+          <svg class="w-3.5 h-3.5" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+          Risiko-Score
+        </span>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:1.125rem;padding:16px 40px;box-shadow:0 8px 40px rgba(0,204,255,0.25);">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          Jetzt kostenlosen Cybercheck starten
+        </a>
+        <a href="https://cyber-sicherheitsradar.de/preise" target="_blank" rel="noopener noreferrer" class="btn-outline-white" style="font-size:1.125rem;padding:16px 40px;">
+          Alle Funktionen ansehen
+        </a>
+      </div>
+
+      <!-- Trust note -->
+      <p class="mt-6 text-xs md:text-sm" style="color:#3c5eac;">
+        KMU-Cybercheck ist eine Landingpage des KMU-SicherheitsRadar – eine Lösung von Webutissimo S.L.
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="relative overflow-hidden" style="background:#060d1a;border-top:1px solid rgba(255,255,255,0.08);">
+  <!-- Top gradient line -->
+  <div class="h-px" style="background:linear-gradient(to right,transparent,rgba(0,204,255,0.3),transparent);"></div>
+
+  <div class="container-main py-12 md:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 mb-10 md:mb-12">
+      <!-- Brand Column -->
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="relative w-9 h-9 flex items-center justify-center flex-shrink-0">
+            <div class="absolute inset-0 rounded-full border-2" style="border-color:rgba(0,204,255,0.5);"></div>
+            <div class="absolute inset-1.5 rounded-full border" style="border-color:rgba(0,204,255,0.25);"></div>
+            <svg class="w-4 h-4 relative z-10" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          </div>
+          <div>
+            <div class="text-white font-bold text-base" style="font-family:'Plus Jakarta Sans',sans-serif;">KMU<span style="color:#26d4ff;">Cybercheck</span></div>
+            <div class="text-xs" style="color:#5a77b8;">powered by KMU-SicherheitsRadar</div>
+          </div>
+        </div>
+        <p class="text-sm leading-relaxed mb-5" style="color:#5a77b8;">Kostenloser Cyber-Sicherheitscheck für kleine und mittlere Unternehmen. Risiken erkennen, bevor es teuer wird.</p>
+        <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:0.875rem;padding:10px 20px;">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          Check starten
+        </a>
+      </div>
+
+      <!-- Links Column -->
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">KMU-SicherheitsRadar</h3>
+        <ul class="space-y-3">
+          <li>
+            <a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="text-sm flex items-center gap-1.5 group transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">
+              <svg class="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              Zum Cyber-Sicherheitscheck
+            </a>
+          </li>
+          <li>
+            <a href="https://cyber-sicherheitsradar.de/preise" target="_blank" rel="noopener noreferrer" class="text-sm flex items-center gap-1.5 transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">Preise & Funktionen</a>
+          </li>
+          <li>
+            <a href="https://cyber-sicherheitsradar.de/" target="_blank" rel="noopener noreferrer" class="text-sm flex items-center gap-1.5 transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">Hauptseite KMU-SicherheitsRadar</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Topics Column -->
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Themen</h3>
+        <ul class="space-y-3">
+          <li><a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">KMU Cybercheck</a></li>
+          <li><a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">NIS2 für KMU</a></li>
+          <li><a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">IT-Sicherheit KMU</a></li>
+          <li><a href="https://cyber-sicherheitsradar.de/check" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">Risiko-Score</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal Column -->
+      <div>
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Rechtliches</h3>
+        <ul class="space-y-3 mb-6">
+          <li><a href="https://cyber-sicherheitsradar.de/impressum" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">Impressum</a></li>
+          <li><a href="https://cyber-sicherheitsradar.de/datenschutz" target="_blank" rel="noopener noreferrer" class="text-sm transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">Datenschutz</a></li>
+        </ul>
+        <!-- Security badge -->
+        <div class="rounded-lg p-3" style="background:rgba(10,22,40,0.6);border:1px solid rgba(255,255,255,0.08);">
+          <div class="flex items-center gap-2 mb-1">
+            <svg class="w-4 h-4" style="color:#26d4ff;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+            <span class="text-white text-xs font-semibold">Datenschutz</span>
+          </div>
+          <p class="text-xs leading-relaxed" style="color:#5a77b8;">Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="h-px mb-6" style="background:rgba(255,255,255,0.05);"></div>
+
+    <!-- Bottom Bar -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="text-xs text-center md:text-left" style="color:#3c5eac;">
+        <p>© 2025 KMU-Cybercheck · Eine Landingpage des KMU-SicherheitsRadar</p>
+        <p class="mt-1">KMU-Cybercheck ist eine Landingpage des KMU-SicherheitsRadar – eine Lösung von <a href="https://cyber-sicherheitsradar.de/" target="_blank" rel="noopener noreferrer" class="transition-colors duration-200" style="color:#5a77b8;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#5a77b8'">Webutissimo S.L.</a></p>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="https://cyber-sicherheitsradar.de/impressum" target="_blank" rel="noopener noreferrer" class="text-xs transition-colors duration-200" style="color:#3c5eac;text-decoration:none;" onmouseover="this.style.color='#7890c4'" onmouseout="this.style.color='#3c5eac'">Impressum</a>
+        <span style="color:#1e3468;">·</span>
+        <a href="https://cyber-sicherheitsradar.de/datenschutz" target="_blank" rel="noopener noreferrer" class="text-xs transition-colors duration-200" style="color:#3c5eac;text-decoration:none;" onmouseover="this.style.color='#7890c4'" onmouseout="this.style.color='#3c5eac'">Datenschutz</a>
+        <span style="color:#1e3468;">·</span>
+        <a href="https://cyber-sicherheitsradar.de/" target="_blank" rel="noopener noreferrer" class="text-xs transition-colors duration-200" style="color:#3c5eac;text-decoration:none;" onmouseover="this.style.color='#26d4ff'" onmouseout="this.style.color='#3c5eac'">KMU-SicherheitsRadar</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header scroll effect
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('site-header');
+    if (window.scrollY > 20) {
+      header.style.background = 'rgba(6,13,26,0.95)';
+      header.style.backdropFilter = 'blur(12px)';
+      header.style.boxShadow = '0 8px 40px rgba(6,13,26,0.6)';
+      header.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+    } else {
+      header.style.background = 'transparent';
+      header.style.backdropFilter = 'none';
+      header.style.boxShadow = 'none';
+      header.style.borderBottom = 'none';
+    }
+  });
+
+  // Mobile menu toggle
+  let menuOpen = false;
+  function toggleMobileMenu() {
+    menuOpen = !menuOpen;
+    const menu = document.getElementById('mobile-menu');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    if (menuOpen) {
+      menu.classList.add('open');
+      bar1.style.transform = 'rotate(45deg) translateY(8px)';
+      bar2.style.opacity = '0';
+      bar3.style.transform = 'rotate(-45deg) translateY(-8px)';
+    } else {
+      menu.classList.remove('open');
+      bar1.style.transform = '';
+      bar2.style.opacity = '1';
+      bar3.style.transform = '';
+    }
+  }
+  function closeMobileMenu() {
+    menuOpen = false;
+    const menu = document.getElementById('mobile-menu');
+    const bar1 = document.getElementById('bar1');
+    const bar2 = document.getElementById('bar2');
+    const bar3 = document.getElementById('bar3');
+    menu.classList.remove('open');
+    bar1.style.transform = '';
+    bar2.style.opacity = '1';
+    bar3.style.transform = '';
+  }
+
+  // FAQ accordion
+  function toggleFAQ(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(function(el) {
+      el.classList.remove('open');
+      el.style.borderColor = 'rgba(255,255,255,0.08)';
+      el.style.background = 'rgba(10,22,40,0.4)';
+      const chevron = el.querySelector('.faq-chevron');
+      if (chevron) {
+        chevron.style.transform = '';
+        chevron.style.borderColor = 'rgba(255,255,255,0.2)';
+        chevron.style.background = 'transparent';
+        chevron.style.color = '#7890c4';
+      }
+      const qText = el.querySelector('.faq-question-text');
+      if (qText) qText.style.color = 'white';
+    });
+    // Open clicked if it was closed
+    if (!isOpen) {
+      item.classList.add('open');
+      item.style.borderColor = 'rgba(0,204,255,0.3)';
+      item.style.background = 'rgba(18,32,71,0.6)';
+      const chevron = item.querySelector('.faq-chevron');
+      if (chevron) {
+        chevron.style.transform = 'rotate(180deg)';
+        chevron.style.borderColor = 'rgba(0,204,255,0.4)';
+        chevron.style.background = 'rgba(0,204,255,0.1)';
+        chevron.style.color = '#26d4ff';
+      }
+      const qText = item.querySelector('.faq-question-text');
+      if (qText) qText.style.color = '#4ddcff';
+    }
+  }
+</script>
+</body>
+</html>
