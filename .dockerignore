@@ -1,5 +1,10 @@
 node_modules
 .next
 .git
-*.md
-.env*.local
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
